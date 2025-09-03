@@ -1,0 +1,29 @@
+name: Deploy Backend (FastAPI) to Azure App Service
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy_backend.yml"
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Zip ONLY the backend contents (so wwwroot will contain app/, requirements.txt, etc.)
+      - name: Create deployment artifact (zip)
+        working-directory: backend
+        run: |
+          zip -r ../backend.zip . -x "__pycache__/*" ".venv/*" ".git/*"
+
+      - name: Deploy to Azure Web App (Zip Deploy)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: vabackend
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_VABACKEND }}
+          package: backend.zip
