@@ -1,0 +1,69 @@
+{
+  "appSettings": [
+    {
+      "name": "COSMOS_DB_CONNECTION_STRING",
+      "value": "mongodb://your-cosmos-account:your-key@your-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@your-cosmos-account@",
+      "slotSetting": false
+    },
+    {
+      "name": "COSMOS_DB_DATABASE_NAME",
+      "value": "hr-onboarding-db",
+      "slotSetting": false
+    },
+    {
+      "name": "COSMOS_DB_COLLECTION_EMPLOYEES",
+      "value": "employees",
+      "slotSetting": false
+    },
+    {
+      "name": "COSMOS_DB_COLLECTION_POLICIES",
+      "value": "policies",
+      "slotSetting": false
+    },
+    {
+      "name": "COSMOS_DB_COLLECTION_EMPLOYEE_KB",
+      "value": "employee_kb",
+      "slotSetting": false
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "value": "your-openai-api-key",
+      "slotSetting": false
+    },
+    {
+      "name": "AI_MODEL",
+      "value": "gpt-3.5-turbo",
+      "slotSetting": false
+    },
+    {
+      "name": "DEBUG",
+      "value": "false",
+      "slotSetting": false
+    },
+    {
+      "name": "LOG_LEVEL",
+      "value": "INFO",
+      "slotSetting": false
+    },
+    {
+      "name": "EXCEL_FILE_PATH",
+      "value": "/tmp/onboarded_employees.xlsx",
+      "slotSetting": false
+    },
+    {
+      "name": "WEBSITE_PYTHON_DEFAULT_VERSION",
+      "value": "3.11",
+      "slotSetting": false
+    },
+    {
+      "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+      "value": "true",
+      "slotSetting": false
+    },
+    {
+      "name": "PYTHONPATH",
+      "value": "D:\\home\\site\\wwwroot",
+      "slotSetting": false
+    }
+  ]
+}

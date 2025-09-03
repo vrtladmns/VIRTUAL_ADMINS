@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Reset - Force consistent font sizing */
+* {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+
+html {
+  font-size: 16px !important;
+}
+
+body {
+  font-size: 16px !important;
+}
+
+#root {
+  font-size: 16px !important;
+}
+
+/* Override Tailwind text utilities to use explicit pixel values */
+.text-xs { font-size: 12px !important; }
+.text-sm { font-size: 14px !important; }
+.text-base { font-size: 16px !important; }
+.text-lg { font-size: 18px !important; }
+.text-xl { font-size: 20px !important; }
+.text-2xl { font-size: 24px !important; }
+.text-3xl { font-size: 30px !important; }
+.text-4xl { font-size: 36px !important; }
+.text-5xl { font-size: 48px !important; }
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+    
+    /* Brand Blue Colors */
+    --brand-blue: 210 100% 54%;
+    --brand-blue-light: 210 100% 64%;
+    --brand-blue-dark: 210 100% 44%;
+    --brand-blue-50: 210 100% 97%;
+    --brand-blue-100: 210 100% 94%;
+    --brand-blue-200: 210 100% 88%;
+    --brand-blue-300: 210 100% 78%;
+    --brand-blue-400: 210 100% 68%;
+    --brand-blue-500: 210 100% 54%;
+    --brand-blue-600: 210 100% 44%;
+    --brand-blue-700: 210 100% 34%;
+    --brand-blue-800: 210 100% 24%;
+    --brand-blue-900: 210 100% 14%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 100% 54%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 210 100% 54%;
+    
+    /* Brand Blue Colors for Dark Theme */
+    --brand-blue: 210 100% 54%;
+    --brand-blue-light: 210 100% 64%;
+    --brand-blue-dark: 210 100% 44%;
+    --brand-blue-50: 210 100% 97%;
+    --brand-blue-100: 210 100% 94%;
+    --brand-blue-200: 210 100% 88%;
+    --brand-blue-300: 210 100% 78%;
+    --brand-blue-400: 210 100% 68%;
+    --brand-blue-500: 210 100% 54%;
+    --brand-blue-600: 210 100% 44%;
+    --brand-blue-700: 210 100% 34%;
+    --brand-blue-800: 210 100% 24%;
+    --brand-blue-900: 210 100% 14%;
+  }
+}
+
+@layer base {
+  /* Global baseline - ensure consistent sizing and scroll hygiene */
+  html, body, #root { 
+    height: 100%; 
+  }
+  
+  html { 
+    font-size: 16px; 
+    scroll-behavior: smooth; 
+    overscroll-behavior-y: none; 
+  }
+  
+  body { 
+    font-size: 1rem; 
+    line-height: 1.5; 
+    overflow-x: hidden; 
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+  
+  /* Ensure consistent box sizing */
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Standardized page container */
+  .page-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+  
+  /* Standardized main content area */
+  .main-content {
+    background-color: #000;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Standardized viewport consistency */
+  .viewport-consistent {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  
+  /* Standardized spacing utilities */
+  .space-y-8 > * + * {
+    margin-top: 2rem;
+  }
+  
+  .space-y-10 > * + * {
+    margin-top: 2.5rem;
+  }
+  
+  .space-y-12 > * + * {
+    margin-top: 3rem;
+  }
+  
+  /* Standardized container behavior */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Force consistent font sizing */
+  .text-xs { font-size: 0.75rem !important; }
+  .text-sm { font-size: 0.875rem !important; }
+  .text-base { font-size: 1rem !important; }
+  .text-lg { font-size: 1.125rem !important; }
+  .text-xl { font-size: 1.25rem !important; }
+  .text-2xl { font-size: 1.5rem !important; }
+  .text-3xl { font-size: 1.875rem !important; }
+  .text-4xl { font-size: 2.25rem !important; }
+  .text-5xl { font-size: 3rem !important; }
+  
+  /* Force all elements to use correct font size */
+  div, span, p, h1, h2, h3, h4, h5, h6, button, input, label, a {
+    font-size: inherit !important;
+  }
+  
+  /* Ensure specific text sizes are enforced */
+  [class*="text-"] {
+    font-size: var(--tw-text-size) !important;
+  }
+  
+  /* CSS custom properties for text sizes */
+  :root {
+    --tw-text-xs: 0.75rem;
+    --tw-text-sm: 0.875rem;
+    --tw-text-base: 1rem;
+    --tw-text-lg: 1.125rem;
+    --tw-text-xl: 1.25rem;
+    --tw-text-2xl: 1.5rem;
+    --tw-text-3xl: 1.875rem;
+    --tw-text-4xl: 2.25rem;
+    --tw-text-5xl: 3rem;
+  }
+}

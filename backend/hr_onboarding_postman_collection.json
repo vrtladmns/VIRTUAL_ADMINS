@@ -1,0 +1,415 @@
+{
+  "info": {
+    "name": "HR Onboarding Backend API - Complete",
+    "description": "Complete API collection for HR Onboarding Chatbot Backend with CTC field and Onboarding Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🏥 Health & System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health"]
+            }
+          }
+        },
+        {
+          "name": "Root Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Employee Management",
+      "item": [
+        {
+          "name": "Onboard Employee (with CTC)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_code\": \"EMP001\",\n  \"employee_name\": \"John Doe\",\n  \"gender\": \"Male\",\n  \"date_of_birth\": \"1990-01-01\",\n  \"date_of_joining\": \"2024-01-15\",\n  \"designation\": \"Software Engineer\",\n  \"ctc_at_joining\": 750000,\n  \"aadhaar_number\": \"123456789012\",\n  \"uan\": \"123456789012\",\n  \"personal_email_id\": \"john.doe@email.com\",\n  \"official_email_id\": \"john.doe@company.com\",\n  \"contact_number\": \"+91-9876543210\",\n  \"emergency_contact_name\": \"Jane Doe\",\n  \"emergency_contact_number\": \"+91-9876543211\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤖 AI & Policy Q&A",
+      "item": [
+        {
+          "name": "Ask AI Question (Enhanced)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What is the company leave policy?\",\n  \"mode\": \"global\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask-policy",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask-policy"]
+            }
+          }
+        },
+        {
+          "name": "Ask Policy Question (Global)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What are the working hours?\",\n  \"mode\": \"global\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask-policy",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask-policy"]
+            }
+          }
+        },
+        {
+          "name": "Ask Policy Question (Guided)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What is the dress code?\",\n  \"mode\": \"guided\",\n  \"section_id\": \"company_guidelines\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask-policy",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask-policy"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Policy Management",
+      "item": [
+        {
+          "name": "Ingest Policy Sections",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sections\": [\n    {\n      \"section_id\": \"about_company\",\n      \"title\": \"About the Company\",\n      \"content\": \"Virtual admins is a leading staffing company dedicated to serving businesses with innovative HR solutions. We offer competitive CTC packages starting from ₹4,00,000 to ₹15,00,000 based on experience and skills.\",\n      \"order\": 1\n    },\n    {\n      \"section_id\": \"employment_management\",\n      \"title\": \"Employment Management\",\n      \"content\": \"Employment terms and conditions, probation period, confirmation process, and career development opportunities within the organization.\",\n      \"order\": 2\n    },\n    {\n      \"section_id\": \"core_values\",\n      \"title\": \"Core Values\",\n      \"content\": \"Our core values are Well Organized, Integrity, Strong Work Ethic, and Customer Focus. These values guide everything we do.\",\n      \"order\": 3\n    },\n    {\n      \"section_id\": \"code_of_conduct\",\n      \"title\": \"Code of Conduct\",\n      \"content\": \"Professional behavior standards, ethical guidelines, and workplace conduct expectations for all employees.\",\n      \"order\": 4\n    },\n    {\n      \"section_id\": \"general_terms\",\n      \"title\": \"General Terms\",\n      \"content\": \"General employment terms, working hours, attendance policies, and basic workplace rules.\",\n      \"order\": 5\n    },\n    {\n      \"section_id\": \"it_security\",\n      \"title\": \"IT & Information Security\",\n      \"content\": \"Information security policies, data protection guidelines, password requirements, and acceptable use of company technology.\",\n      \"order\": 6\n    },\n    {\n      \"section_id\": \"company_guidelines\",\n      \"title\": \"Company Internal Guidelines\",\n      \"content\": \"Internal company policies, procedures, and guidelines for day-to-day operations.\",\n      \"order\": 7\n    },\n    {\n      \"section_id\": \"harassment_procedures\",\n      \"title\": \"Harassment Complaint Procedures\",\n      \"content\": \"Anti-harassment policies, complaint procedures, and support mechanisms for employees.\",\n      \"order\": 8\n    },\n    {\n      \"section_id\": \"transportation_policy\",\n      \"title\": \"Transportation Policy\",\n      \"content\": \"Company transportation policies, travel allowances, and transportation-related guidelines.\",\n      \"order\": 9\n    },\n    {\n      \"section_id\": \"asset_policy\",\n      \"title\": \"Asset Policy\",\n      \"content\": \"Company asset management, equipment usage, and asset protection policies.\",\n      \"order\": 10\n    },\n    {\n      \"section_id\": \"floor_policy\",\n      \"title\": \"Floor Policy\",\n      \"content\": \"Office floor policies, workspace guidelines, and workplace environment rules.\",\n      \"order\": 11\n    },\n    {\n      \"section_id\": \"intellectual_property\",\n      \"title\": \"Protection of Intellectual Property\",\n      \"content\": \"Intellectual property protection, confidentiality agreements, and proprietary information handling.\",\n      \"order\": 12\n    },\n    {\n      \"section_id\": \"leave_policy\",\n      \"title\": \"Leave Policy\",\n      \"content\": \"Leave types, application procedures, leave balance management, and leave-related benefits.\",\n      \"order\": 13\n    },\n    {\n      \"section_id\": \"separation_policy\",\n      \"title\": \"Separation Policy\",\n      \"content\": \"Resignation procedures, exit formalities, and separation-related policies.\",\n      \"order\": 14\n    },\n    {\n      \"section_id\": \"termination_policy\",\n      \"title\": \"Termination Policy\",\n      \"content\": \"Termination procedures, notice periods, and termination-related policies.\",\n      \"order\": 15\n    },\n    {\n      \"section_id\": \"disclaimer_form\",\n      \"title\": \"Disclaimer Form\",\n      \"content\": \"Legal disclaimers, terms of employment, and important legal information.\",\n      \"order\": 16\n    },\n    {\n      \"section_id\": \"compliance_policy\",\n      \"title\": \"Compliance Policy\",\n      \"content\": \"Regulatory compliance, legal requirements, and compliance-related policies.\",\n      \"order\": 17\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ingest",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ingest"]
+            }
+          }
+        },
+        {
+          "name": "Get All Policies (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/policies?limit=10&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["api", "policies"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Policy by Section ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/policies?section_id=about_company",
+              "host": ["{{base_url}}"],
+              "path": ["api", "policies"],
+              "query": [
+                {
+                  "key": "section_id",
+                  "value": "about_company"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Policy by Step Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/policies?step=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "policies"],
+              "query": [
+                {
+                  "key": "step",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Policies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/policies?search=leave",
+              "host": ["{{base_url}}"],
+              "path": ["api", "policies"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "leave"
+                }
+              ]
+            }
+          }
+        },
+
+      ]
+    },
+    {
+      "name": "🚀 Onboarding Automation",
+      "item": [
+        {
+          "name": "Start Onboarding Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee_id\": \"EMP001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/start",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "start"]
+            }
+          }
+        },
+        {
+          "name": "Get Onboarding Progress",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/progress/{{session_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "progress", "{{session_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Move to Next Step",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"next\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/next-step",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "next-step"]
+            }
+          }
+        },
+        {
+          "name": "Move to Previous Step",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"previous\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/previous-step",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "previous-step"]
+            }
+          }
+        },
+        {
+          "name": "Complete Current Step",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"complete\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/complete-step",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "complete-step"]
+            }
+          }
+        },
+        {
+          "name": "Skip Current Step",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"skip\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/skip-step",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "skip-step"]
+            }
+          }
+        },
+        {
+          "name": "Ask Question During Onboarding",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/ask?session_id={{session_id}}&question=What are the main points I should remember about this policy?",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "ask"],
+              "query": [
+                {
+                  "key": "session_id",
+                  "value": "{{session_id}}"
+                },
+                {
+                  "key": "question",
+                  "value": "What are the main points I should remember about this policy?"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Onboarding Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/status/{{session_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "status", "{{session_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Overall Onboarding Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/onboarding/metrics",
+              "host": ["{{base_url}}"],
+              "path": ["api", "onboarding", "metrics"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "session_id",
+      "value": "your_session_id_here",
+      "type": "string"
+    }
+  ]
+}
