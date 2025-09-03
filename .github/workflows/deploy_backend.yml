@@ -15,11 +15,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Zip ONLY the backend contents (so wwwroot will contain app/, requirements.txt, etc.)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Vendor dependencies into .python_packages so the server doesn't need pip
+      - name: Install production dependencies into .python_packages
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -t .python_packages/lib/site-packages
+
+      # Zip ONLY backend contents (exclude venv, git, and .deployment)
       - name: Create deployment artifact (zip)
         working-directory: backend
         run: |
-          zip -r ../backend.zip . -x "__pycache__/*" ".venv/*" ".git/*"
+          zip -r ../backend.zip . \
+            -x "__pycache__/*" ".venv/*" ".git/*" ".deployment"
 
       - name: Deploy to Azure Web App (Zip Deploy)
         uses: azure/webapps-deploy@v3
