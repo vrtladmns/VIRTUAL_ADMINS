@@ -15,7 +15,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:5173",
-        "*"
+        "https://icy-rock-023916e1e.2.azurestaticapps.net",
+        "*"  # Keep for development
     ],
     allow_credentials=True,
     allow_methods=["*"],
