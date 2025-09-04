@@ -1,8 +1,18 @@
 import axios from 'axios'
 
+// Get API base URL from environment variables
+const injected = import.meta.env.VITE_API_BASE_URL;
+// Local dev fallback
+const fallback = 'http://localhost:8000/api';
+
+// Use environment variable if available, otherwise fallback to localhost
+const API_BASE = injected || fallback;
+
+console.log('API Base URL:', API_BASE); // For debugging
+
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: API_BASE,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
