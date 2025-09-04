@@ -33,3 +33,12 @@ async def root():
         "version": "1.0.0",
         "docs": "/docs"
     }
+
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint for Azure App Service monitoring"""
+    return {
+        "status": "healthy",
+        "message": "Service is running",
+        "version": "1.0.0"
+    }

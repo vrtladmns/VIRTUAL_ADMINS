@@ -19,10 +19,16 @@ if __name__ == "__main__":
     # Get port from environment variable (Azure App Service sets this)
     port = int(os.environ.get("PORT", 8000))
     
-    # Run the application
+    print(f"Starting FastAPI application on port {port}")
+    print(f"Host: 0.0.0.0")
+    print(f"Environment: {os.environ.get('WEBSITE_SITE_NAME', 'local')}")
+    
+    # Run the application with more verbose logging
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
         port=port,
-        log_level="info"
+        log_level="info",
+        access_log=True,
+        reload=False
     )
