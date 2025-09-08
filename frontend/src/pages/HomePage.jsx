@@ -248,7 +248,7 @@ export const HomePage = () => {
           </div>
 
           {/* Quick Actions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
             {/* AI Chat Card */}
             <Card className="h-56 lg:h-60 bg-gradient-to-br from-gray-900/40 to-gray-800/20 border border-gray-700/50 hover:border-brand-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group cursor-pointer rounded-2xl" onClick={() => handleFeatureClick('/chat')}>
               <CardHeader className="text-center p-6">
@@ -272,7 +272,7 @@ export const HomePage = () => {
             </Card>
 
             {/* Company Policies Card */}
-            <Card className="h-56 lg:h-60 bg-gradient-to-br from-gray-900/40 to-gray-800/20 border border-gray-700/50 hover:border-brand-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group cursor-pointer rounded-2xl" onClick={() => handleFeatureClick('/policies')}>
+            {/* <Card className="h-56 lg:h-60 bg-gradient-to-br from-gray-900/40 to-gray-800/20 border border-gray-700/50 hover:border-brand-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group cursor-pointer rounded-2xl" onClick={() => handleFeatureClick('/policies')}>
               <CardHeader className="text-center p-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Building className="h-8 w-8 text-white" />
@@ -280,7 +280,7 @@ export const HomePage = () => {
                 <CardTitle className="text-xl text-white group-hover:text-blue-400 transition-colors duration-300 tracking-tight">Company Policies</CardTitle>
                 <CardDescription className="text-gray-400 leading-relaxed">Access and review company policies</CardDescription>
               </CardHeader>
-            </Card>
+            </Card> */}
 
             {/* Analytics Card */}
             {/* <Card className="bg-gradient-to-br from-gray-900/40 to-gray-800/20 border border-gray-700/50 hover:border-brand-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/10 group cursor-pointer" onClick={() => handleFeatureClick('/analytics')}>

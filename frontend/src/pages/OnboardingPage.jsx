@@ -524,7 +524,7 @@ export const OnboardingPage = () => {
               <CardFooter className="p-8 pt-0">
                 <div className="w-full space-y-6">
                   {/* Debug Info */}
-                  <div className="text-sm text-gray-400 text-center">
+                  {/* <div className="text-sm text-gray-400 text-center">
                     Form Valid: {isValid ? '✅ Yes' : '❌ No'} | 
                     Has Errors: {Object.keys(errors).length > 0 ? '❌ Yes' : '✅ No'}
                   </div>
@@ -535,7 +535,7 @@ export const OnboardingPage = () => {
                       `${Object.keys(errors).length} validation errors` : 
                       'All fields valid'
                     }
-                  </div>
+                  </div> */
                   
                   <Button 
                     type="submit" 
@@ -553,7 +553,7 @@ export const OnboardingPage = () => {
                   </Button>
                   
                   {/* Test Button */}
-                  <Button 
+                  {/* <Button 
                     type="button"
                     onClick={() => {
                       console.log('Current form errors:', errors)
@@ -563,10 +563,10 @@ export const OnboardingPage = () => {
                     className="w-full border-gray-600 text-gray-300 hover:bg-gray-800"
                   >
                     Debug: Show Form State
-                  </Button>
+                  </Button> */}
                   
                   {/* Test API Connection Button */}
-                  <Button 
+                  {/* <Button 
                     type="button"
                     onClick={async () => {
                       console.log('🧪 Testing API connection...')
@@ -583,7 +583,7 @@ export const OnboardingPage = () => {
                     className="w-full bg-yellow-900/20 border-yellow-600 text-yellow-400 hover:bg-yellow-900/30"
                   >
                     🧪 Test Backend Connection
-                  </Button>
+                  </Button> */}
                 </div>
               </CardFooter>
             </form>

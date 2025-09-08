@@ -38,7 +38,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
   const navigation = [
     { id: 'chat', label: 'AI Chat', icon: MessageCircle, path: '/' },
     { id: 'onboarding', label: 'Employee Onboarding', icon: Users, path: '/onboarding' },
-    { id: 'policies', label: 'Company Policies', icon: FileText, path: '/policies' },
+    // { id: 'policies', label: 'Company Policies', icon: FileText, path: '/policies' },
     // { id: 'analytics', label: 'Analytics', icon: BarChart3, path: '/analytics' },
     // { id: 'settings', label: 'Settings', icon: Settings, path: '/settings' },
   ]
