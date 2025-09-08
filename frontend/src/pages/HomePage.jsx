@@ -33,8 +33,9 @@ export const HomePage = () => {
   const phrases = [
     "Ask me anything about HR and onboarding...",
     "Try: \"What are our leave policies?\"",
-    "Try: \"Add a new employee joining today.\"",
-    "Try: \"Show me onboarding status for August.\""
+    "Try: \"How do I report if I’m going to be absent?\"",
+    "Try: \"What should I do if I forget to clock in?.\"",
+    "Try: \"Can exceptions be made if I was late due to transport problems?.\""
   ]
 
   // Speed controls
