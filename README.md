@@ -469,13 +469,11 @@ This project uses **Azure Zip Deploy** for production deployment, which is the r
 
 ## 📄 License & Copyright
 
-**Copyright © 2024 Sankalp Gupta, Virtual Admins. All rights reserved.**
+**Copyright © 2025 Virtual Admins. All rights reserved.**
 
 This project is proprietary software developed by Sankalp Gupta for Virtual Admins. This software is confidential and proprietary. No part of this software may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the copyright holder.
 
 **Unauthorized copying, distribution, or use of this software is strictly prohibited and may result in severe civil and criminal penalties.**
-
-For licensing inquiries, please contact: [Your Contact Information]
 
 ## 🆘 Support & Troubleshooting
 
@@ -503,11 +501,10 @@ For licensing inquiries, please contact: [Your Contact Information]
 - **v1.2.0** - Enhanced UI with dark mode support
 - **v1.3.0** - Azure deployment optimization
 
-## 🙏 Acknowledgments
 
-**Developed by Sankalp Gupta for Virtual Admins**
+**Developed by Sankalp for Virtual Admins**
 
-- Built with ❤️ using modern web technologies
+- Built using modern web technologies
 - Powered by Azure AI services
 - UI components from shadcn/ui
 - Icons from Lucide React
@@ -515,6 +512,5 @@ For licensing inquiries, please contact: [Your Contact Information]
 
 ---
 
-**© 2024 Sankalp Gupta, Virtual Admins. All rights reserved.**
+**© Virtual Admins. All rights reserved.**
 
-**Ready to transform your HR onboarding process? Contact us for licensing!** 🚀
