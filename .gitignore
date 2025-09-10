@@ -2,8 +2,3 @@
 backend/.venv/
 
 backend/.deployment
-
-# Temporary files
-*.tmp
-*.temp
-how*
