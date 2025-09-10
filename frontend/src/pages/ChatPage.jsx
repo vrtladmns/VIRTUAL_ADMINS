@@ -44,7 +44,7 @@ export const ChatPage = () => {
     {
       id: 1,
       sender: 'bot',
-              content: `Welcome to HR VA! I'm your AI HR assistant, here to help you with day-to-day HR questions and support. I can answer questions about company procedures, benefits, policies, and provide helpful guidance on company culture, workplace practices, and general HR topics. You can also switch to Onboarding mode for policy-specific questions.`,
+              content: `Welcome to HR VA! I'm your AI assistant for HR questions, policies, and onboarding support.`,
       timestamp: new Date()
     }
   ])
@@ -240,14 +240,7 @@ export const ChatPage = () => {
       console.log('📚 Selected mode:', selectedMode)
       console.log('🎯 Selected section:', selectedSection)
       
-      // First, let's verify backend is accessible
-      try {
-        const healthCheck = await endpoints.health()
-        console.log('✅ Backend health check passed:', healthCheck.data)
-      } catch (healthError) {
-        console.error('❌ Backend health check failed:', healthError)
-        throw new Error('Backend is not accessible. Please check if the server is running.')
-      }
+      // Health check removed for better performance
       
       // Use the new /api/ask endpoint
       const requestPayload = {
@@ -354,7 +347,7 @@ export const ChatPage = () => {
     <div className="flex-1 bg-black flex flex-col main-content">
       {/* Header */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="p-4 border-b border-gray-800 bg-gradient-to-br from-gray-900/70 to-gray-800/50">
+        <div className="p-4 border-b border-gray-800 bg-black">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-4">
               <h1 className="text-3xl font-bold text-white mb-2 bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">AI HR Assistant</h1>
@@ -533,7 +526,7 @@ export const ChatPage = () => {
 
         {/* Scope Toggle */}
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="p-3 border-t border-gray-800 bg-gradient-to-br from-gray-900/70 to-gray-800/50">
+          <div className="p-3 border-t border-gray-800 bg-black">
             <div className="text-center mb-3">
               <h2 className="text-lg font-bold text-white mb-2 bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">Chat Scope</h2>
               <div className="flex gap-2 justify-center">
@@ -575,7 +568,7 @@ export const ChatPage = () => {
 
         {/* Suggested Prompts */}
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="p-3 border-t border-gray-800 bg-gradient-to-br from-gray-900/60 to-gray-800/40">
+          <div className="p-3 border-t border-gray-800 bg-black">
             <div className="text-center mb-3">
               <h2 className="text-lg font-bold text-white mb-1 bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">Quick Suggestions</h2>
               <p className="text-gray-300 text-xs">
@@ -604,7 +597,7 @@ export const ChatPage = () => {
 
         {/* Chat Input */}
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="p-3 border-t border-gray-800 bg-gradient-to-br from-gray-900/50 to-gray-800/30">
+          <div className="p-3 border-t border-gray-800 bg-black">
             {isInitializing ? (
               <div className="flex items-center justify-center gap-2 py-3">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-400"></div>
@@ -614,7 +607,7 @@ export const ChatPage = () => {
               <>
                 {/* Mode Selection - Only show for onboarding scope */}
                 {selectedScope === 'onboarding' && (
-                  <div className="mb-3 p-3 bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-xl border border-gray-700/50 backdrop-blur-sm shadow-lg">
+                  <div className="mb-3 p-3 bg-gray-900 rounded-xl border border-gray-700/50 shadow-lg">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="text-white font-bold text-sm">Chat Mode:</span>
                       <div className="flex gap-2">
@@ -644,7 +637,7 @@ export const ChatPage = () => {
                     </div>
                     
                     {selectedMode === 'guided' && (
-                      <div className="flex items-center gap-2 p-2 bg-gradient-to-r from-gray-800/60 to-gray-700/50 rounded-lg border border-gray-600/50 shadow-md">
+                      <div className="flex items-center gap-2 p-2 bg-gray-800 rounded-lg border border-gray-600/50 shadow-md">
                         <span className="text-white text-xs font-semibold">Policy Section:</span>
                         <select
                           value={selectedSection}
@@ -667,7 +660,7 @@ export const ChatPage = () => {
                       </div>
                     )}
                     
-                    <div className="mt-2 p-2 bg-gradient-to-r from-gray-800/50 to-gray-700/40 rounded-lg border border-gray-600/40 shadow-md">
+                    <div className="mt-2 p-2 bg-gray-800 rounded-lg border border-gray-600/40 shadow-md">
                       <p className="text-xs text-gray-200 font-medium">
                         {selectedMode === 'global' 
                           ? 'Global Mode: AI will search through all 17 policy sections to answer your question with comprehensive coverage'
@@ -679,7 +672,7 @@ export const ChatPage = () => {
                 )}
                 
                 {/* Chat Input Field */}
-                <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-gray-900/70 to-gray-800/50 rounded-xl border border-gray-700/50 backdrop-blur-sm shadow-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-900 rounded-xl border border-gray-700/50 shadow-lg">
                   <div className="flex-1 relative">
                     <Input
                       type="text"

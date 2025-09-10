@@ -26,13 +26,18 @@
       "slotSetting": false
     },
     {
-      "name": "OPENAI_API_KEY",
-      "value": "your-openai-api-key",
+      "name": "AZURE_AI_ENDPOINT",
+      "value": "https://credai-resource.cognitiveservices.azure.com/",
       "slotSetting": false
     },
     {
-      "name": "AI_MODEL",
-      "value": "gpt-3.5-turbo",
+      "name": "AZURE_AI_API_KEY",
+      "value": "GAhASRd18j7g65KFBS4RT0fkTeAmJXkuBZdzxLd4fzT81T3wiVAfJQQJ99BIACHYHv6XJ3w3AAAAACOGOpud",
+      "slotSetting": false
+    },
+    {
+      "name": "AZURE_AI_DEPLOYMENT",
+      "value": "gpt-4o-mini",
       "slotSetting": false
     },
     {

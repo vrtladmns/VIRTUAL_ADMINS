@@ -1,7 +1,8 @@
 import os
 import logging
 import httpx
-from typing import Dict, Any
+import asyncio
+from typing import Dict, Any, Optional
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -24,6 +25,42 @@ class AIConnector:
             self.azure_endpoint = f"https://{self.azure_resource}/openai/deployments/{self.azure_deployment}/chat/completions?api-version={self.api_version}"
         else:
             self.azure_endpoint = None
+        
+        # Initialize shared HTTP client with HTTP/2 and connection pooling
+        self._client: Optional[httpx.AsyncClient] = None
+        self._client_lock = asyncio.Lock()
+    
+    async def _get_client(self) -> httpx.AsyncClient:
+        """Get or create the shared HTTP client"""
+        if self._client is None:
+            async with self._client_lock:
+                if self._client is None:
+                    # Create client with HTTP/2, connection pooling, and gzip
+                    self._client = httpx.AsyncClient(
+                        http2=True,  # HTTP/2 enabled with h2 package
+                        limits=httpx.Limits(
+                            max_keepalive_connections=20,
+                            max_connections=100,
+                            keepalive_expiry=30.0
+                        ),
+                        timeout=httpx.Timeout(
+                            connect=5.0,  # Shorter connect timeout
+                            read=30.0,   # Reasonable read timeout
+                            write=10.0,
+                            pool=5.0
+                        ),
+                        headers={
+                            "Accept-Encoding": "gzip, deflate",
+                            "User-Agent": "HR-Onboarding-Bot/1.0"
+                        }
+                    )
+        return self._client
+    
+    async def close(self):
+        """Close the HTTP client"""
+        if self._client:
+            await self._client.aclose()
+            self._client = None
     
     def _get_system_prompt(self, context: str, mode: str) -> str:
         """Generate system prompt based on context and mode"""
@@ -46,7 +83,7 @@ Please answer the employee's question based on the above policy information."""
         
         return base_prompt.format(context=context, mode=mode)
     
-    async def ask_ai(self, question: str, context: str = "", mode: str = "global") -> str:
+    async def ask_ai(self, question: str, context: str = "", mode: str = "global", max_tokens: int = 512) -> str:
         """Send question to Azure AI with policy context and return answer"""
         try:
             # Check if Azure AI is configured
@@ -54,8 +91,7 @@ Please answer the employee's question based on the above policy information."""
                 logger.error(f"Azure AI not configured. Endpoint: {self.azure_endpoint}, API Key: {'Set' if self.azure_api_key else 'Not Set'}")
                 return "AI is not configured yet. Please check AZURE_AI_ENDPOINT and AZURE_AI_API_KEY in .env."
             
-            logger.info(f"Calling Azure AI endpoint: {self.azure_endpoint}")
-            logger.info(f"Using deployment: {self.azure_deployment}")
+            logger.info(f"Calling Azure AI deployment: {self.azure_deployment} (mode: {mode})")
             
             # Generate system prompt with context
             system_prompt = self._get_system_prompt(context, mode)
@@ -71,40 +107,41 @@ Please answer the employee's question based on the above policy information."""
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": question}
                 ],
-                "max_tokens": 4096,
+                "max_tokens": max_tokens,
                 "temperature": 0.7,
                 "top_p": 1.0,
                 "model": self.azure_deployment
             }
             
-            # Make request to Azure AI
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(
-                    self.azure_endpoint,
-                    json=payload,
-                    headers=headers
-                )
+            # Get shared client and make request
+            client = await self._get_client()
+            response = await client.post(
+                self.azure_endpoint,
+                json=payload,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                # Log only essential info, not full response
+                logger.info(f"Azure AI response received (status: {response.status_code}, latency: {response.elapsed.total_seconds():.2f}s)")
                 
-                if response.status_code == 200:
-                    data = response.json()
-                    logger.info(f"Azure AI response: {data}")
-                    
-                    # Handle different response formats
-                    if "choices" in data and len(data["choices"]) > 0:
-                        answer = data["choices"][0]["message"]["content"]
-                    elif "answer" in data:
-                        answer = data["answer"]
-                    else:
-                        answer = "No answer received from AI service."
-                        logger.warning(f"Unexpected response format: {data}")
-                    
-                    logger.info(f"AI question answered successfully in {mode} mode")
-                    return answer
+                # Handle different response formats
+                if "choices" in data and len(data["choices"]) > 0:
+                    answer = data["choices"][0]["message"]["content"]
+                elif "answer" in data:
+                    answer = data["answer"]
                 else:
-                    error_detail = response.text if response.text else "No error details"
-                    logger.error(f"Azure AI returned status {response.status_code}: {error_detail}")
-                    return f"AI service returned error: {response.status_code}. Details: {error_detail}"
-                    
+                    answer = "No answer received from AI service."
+                    logger.warning(f"Unexpected response format: {list(data.keys())}")
+                
+                logger.info(f"AI question answered successfully in {mode} mode")
+                return answer
+            else:
+                error_detail = response.text if response.text else "No error details"
+                logger.error(f"Azure AI returned status {response.status_code}: {error_detail[:200]}...")
+                return f"AI service returned error: {response.status_code}. Details: {error_detail}"
+                
         except httpx.TimeoutException:
             logger.error("Timeout while calling Azure AI service")
             return "AI service request timed out. Please try again."
@@ -112,11 +149,11 @@ Please answer the employee's question based on the above policy information."""
             logger.error(f"Error calling Azure AI service: {str(e)}")
             return "Error connecting to AI service. Please try again later."
     
-    async def ask_policy_question(self, question: str, context: str, mode: str = "auto") -> str:
+    async def ask_policy_question(self, question: str, context: str, mode: str = "auto", max_tokens: int = 512) -> str:
         """Specialized method for policy questions with context"""
-        return await self.ask_ai(question, context, mode)
+        return await self.ask_ai(question, context, mode, max_tokens)
     
-    async def ask_helpdesk_question(self, question: str, context: str) -> str:
+    async def ask_helpdesk_question(self, question: str, context: str, max_tokens: int = 512) -> str:
         """Specialized method for employee helpdesk questions with SOP context and company information"""
         try:
             # Enhanced helpdesk prompt with company information capability
@@ -161,40 +198,41 @@ Please answer the employee's question based on the above information. If it's an
                     {"role": "system", "content": helpdesk_prompt},
                     {"role": "user", "content": question}
                 ],
-                "max_tokens": 4096,
+                "max_tokens": max_tokens,
                 "temperature": 0.7,
                 "top_p": 1.0,
                 "model": self.azure_deployment
             }
             
-            # Make request to Azure AI
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(
-                    self.azure_endpoint,
-                    json=payload,
-                    headers=headers
-                )
+            # Get shared client and make request
+            client = await self._get_client()
+            response = await client.post(
+                self.azure_endpoint,
+                json=payload,
+                headers=headers
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                # Log only essential info, not full response
+                logger.info(f"Azure AI helpdesk response received (status: {response.status_code}, latency: {response.elapsed.total_seconds():.2f}s)")
                 
-                if response.status_code == 200:
-                    data = response.json()
-                    logger.info(f"Azure AI helpdesk response: {data}")
-                    
-                    # Handle different response formats
-                    if "choices" in data and len(data["choices"]) > 0:
-                        answer = data["choices"][0]["message"]["content"]
-                    elif "answer" in data:
-                        answer = data["answer"]
-                    else:
-                        answer = "No answer received from AI service."
-                        logger.warning(f"Unexpected response format: {data}")
-                    
-                    logger.info(f"AI helpdesk question answered successfully")
-                    return answer
+                # Handle different response formats
+                if "choices" in data and len(data["choices"]) > 0:
+                    answer = data["choices"][0]["message"]["content"]
+                elif "answer" in data:
+                    answer = data["answer"]
                 else:
-                    error_detail = response.text if response.text else "No error details"
-                    logger.error(f"Azure AI returned status {response.status_code}: {error_detail}")
-                    return f"AI service returned error: {response.status_code}. Details: {error_detail}"
-                    
+                    answer = "No answer received from AI service."
+                    logger.warning(f"Unexpected response format: {list(data.keys())}")
+                
+                logger.info(f"AI helpdesk question answered successfully")
+                return answer
+            else:
+                error_detail = response.text if response.text else "No error details"
+                logger.error(f"Azure AI returned status {response.status_code}: {error_detail[:200]}...")
+                return f"AI service returned error: {response.status_code}. Details: {error_detail}"
+                
         except httpx.TimeoutException:
             logger.error("Timeout while calling Azure AI service")
             return "AI service request timed out. Please try again."
@@ -202,7 +240,7 @@ Please answer the employee's question based on the above information. If it's an
             logger.error(f"Error calling Azure AI service: {str(e)}")
             return "Error connecting to AI service. Please try again later."
     
-    async def ask_onboarding_question(self, question: str, context: str, session_id: str, current_step: int, policy_id: str) -> str:
+    async def ask_onboarding_question(self, question: str, context: str, session_id: str, current_step: int, policy_id: str, max_tokens: int = 512) -> str:
         """Enhanced method for onboarding questions with session context"""
         try:
             # Enhance context with onboarding information
@@ -223,7 +261,7 @@ Always be supportive and patient - this is their learning journey.
 """
             
             # Call Azure AI with enhanced context
-            answer = await self.ask_ai(question, onboarding_context, "guided")
+            answer = await self.ask_ai(question, onboarding_context, "guided", max_tokens)
             
             # Track that AI was used for this policy
             try:
@@ -241,3 +279,8 @@ Always be supportive and patient - this is their learning journey.
 
 # Global instance
 ai_connector = AIConnector()
+
+# Cleanup function for app shutdown
+async def cleanup_ai_connector():
+    """Cleanup function to close the HTTP client on app shutdown"""
+    await ai_connector.close()

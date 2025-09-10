@@ -31,9 +31,10 @@ export const HomePage = () => {
 
   // Animated placeholder phrases
   const phrases = [
+    "💬 Click the avatar or type here to start chatting...",
     "Ask me anything about HR and onboarding...",
     "Try: \"What are our leave policies?\"",
-    "Try: \"How do I report if I’m going to be absent?\"",
+    "Try: \"How do I report if I'm going to be absent?\"",
     "Try: \"What should I do if I forget to clock in?.\"",
     "Try: \"Can exceptions be made if I was late due to transport problems?.\""
   ]
@@ -155,6 +156,33 @@ export const HomePage = () => {
           0%, 50% { opacity: 1; }
           51%, 100% { opacity: 0; }
         }
+        
+        @keyframes gentle-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+        
+        @keyframes float-gentle {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes glow-subtle {
+          0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+          50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
+        }
+        
+        .gentle-pulse {
+          animation: gentle-pulse 3s ease-in-out infinite;
+        }
+        
+        .float-gentle {
+          animation: float-gentle 4s ease-in-out infinite;
+        }
+        
+        .glow-subtle {
+          animation: glow-subtle 2s ease-in-out infinite;
+        }
       `}</style>
       
              {/* Main Content */}
@@ -165,14 +193,17 @@ export const HomePage = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-white bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 bg-clip-text text-transparent text-center">
             Your AI HR Navigator
             </h1>
+            <p className="text-center text-gray-400 mt-4 text-lg">
+              Click the avatar or type below to start your conversation
+            </p>
           </div>
 
                      {/* AI Avatar - Centered and Prominent */}
            <div className="flex justify-center mb-16 lg:mb-20">
-            <div 
-              className="relative cursor-pointer transition-all duration-500 group"
-              onClick={() => handleFeatureClick('/chat')}
-            >
+              <div 
+                className="relative cursor-pointer transition-all duration-500 group gentle-pulse"
+                onClick={() => handleFeatureClick('/chat')}
+              >
               {/* Main Avatar with Enhanced Effects */}
               <div className="w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 bg-gradient-to-br from-brand-400 via-brand-500 to-brand-600 rounded-full flex items-center justify-center shadow-2xl shadow-brand-500/40 group-hover:shadow-brand-500/60 group-hover:shadow-2xl">
                 <Bot className="h-12 w-12 md:h-16 md:w-16 lg:h-18 lg:w-18 text-white" />
@@ -182,10 +213,10 @@ export const HomePage = () => {
               <div className="absolute inset-0 w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 bg-gradient-to-br from-brand-400 via-brand-500 to-brand-600 rounded-full blur-2xl opacity-40 animate-pulse group-hover:opacity-60 group-hover:blur-3xl transition-all duration-500"></div>
              
               {/* Floating Particles Effect */}
-              <div className="absolute -top-2 -left-2 w-3 h-3 md:w-4 md:h-4 bg-yellow-400 rounded-full animate-bounce opacity-80 group-hover:opacity-100"></div>
-              <div className="absolute -top-3 -right-2 w-2.5 h-2.5 md:w-3 md:h-3 bg-pink-400 rounded-full animate-bounce opacity-80 group-hover:opacity-100" style={{ animationDelay: '0.5s' }}></div>
-              <div className="absolute -bottom-2 -left-3 w-2 h-2 md:w-2.5 md:h-2.5 bg-blue-400 rounded-full animate-bounce opacity-80 group-hover:opacity-100" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 md:w-3 md:h-3 bg-green-400 rounded-full animate-bounce opacity-80 group-hover:opacity-100" style={{ animationDelay: '1.5s' }}></div>
+              <div className="absolute -top-2 -left-2 w-3 h-3 md:w-4 md:h-4 bg-yellow-400 rounded-full float-gentle opacity-80 group-hover:opacity-100"></div>
+              <div className="absolute -top-3 -right-2 w-2.5 h-2.5 md:w-3 md:h-3 bg-pink-400 rounded-full float-gentle opacity-80 group-hover:opacity-100" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute -bottom-2 -left-3 w-2 h-2 md:w-2.5 md:h-2.5 bg-blue-400 rounded-full float-gentle opacity-80 group-hover:opacity-100" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 md:w-3 md:h-3 bg-green-400 rounded-full float-gentle opacity-80 group-hover:opacity-100" style={{ animationDelay: '1.5s' }}></div>
              
               {/* Enhanced Chat Indicator */}
               <div className="absolute -bottom-2 -right-2 w-6 h-6 md:w-8 md:h-8 bg-brand-500 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -193,7 +224,7 @@ export const HomePage = () => {
               </div>
              
               {/* Enhanced Click Hint - Fixed positioning to prevent overlap */}
-              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-sm md:text-base text-brand-400 opacity-100 transition-all duration-300 whitespace-nowrap font-medium z-10">
+              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-sm md:text-base text-brand-400 opacity-100 transition-all duration-300 whitespace-nowrap font-medium z-10 glow-subtle">
                 ✨ Click to start chatting! ✨
               </div>
              
@@ -206,7 +237,7 @@ export const HomePage = () => {
            <div className="max-w-3xl mx-auto w-full mt-16 mb-16">
             <div className="relative group">
               {/* Modern Floating Input Container */}
-              <div className="relative bg-gray-900/40 backdrop-blur-xl border border-gray-700/50 rounded-xl p-1.5 shadow-lg shadow-black/20 group-hover:border-brand-500/30 group-hover:shadow-brand-500/10 transition-all duration-300 focus-within:ring-1 focus-within:ring-brand-500/40 focus-within:shadow-brand-500/20 focus-within:border-brand-500/50">
+              <div className="relative bg-gray-900/40 backdrop-blur-xl border border-gray-700/50 rounded-xl p-1.5 shadow-lg shadow-black/20 group-hover:border-brand-500/30 group-hover:shadow-brand-500/10 transition-all duration-300 focus-within:ring-1 focus-within:ring-brand-500/40 focus-within:shadow-brand-500/20 focus-within:border-brand-500/50 glow-subtle">
                 {/* Input Field */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1 relative">

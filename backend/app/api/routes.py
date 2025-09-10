@@ -452,7 +452,8 @@ async def enhanced_ask(request: EnhancedAskRequest):
                 # Process question with AI using the specialized helpdesk method
                 answer = await ai_connector.ask_helpdesk_question(
                     question=request.message,
-                    context=context
+                    context=context,
+                    max_tokens=512
                 )
                 
                 return EnhancedAskResponse(
@@ -497,7 +498,8 @@ async def enhanced_ask(request: EnhancedAskRequest):
             answer = await ai_connector.ask_policy_question(
                 question=request.message,
                 context=context,
-                mode=actual_mode
+                mode=actual_mode,
+                max_tokens=512
             )
             
             return EnhancedAskResponse(
