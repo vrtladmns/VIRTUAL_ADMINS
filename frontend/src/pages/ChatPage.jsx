@@ -322,7 +322,7 @@ export const ChatPage = () => {
         {
           id: Date.now(),
           sender: 'bot',
-          content: `Welcome to HR VA! I'm your AI HR assistant, here to help you with day-to-day HR questions and support. I can answer questions about company procedures, benefits, policies, and provide helpful guidance on company culture, workplace practices, and general HR topics. You can also switch to Onboarding mode for policy-specific questions.`,
+          content: `Welcome to HR VA! I'm your AI assistant for HR questions, policies, and onboarding support.`,
           timestamp: new Date()
         }
       ])
@@ -335,7 +335,7 @@ export const ChatPage = () => {
         {
           id: Date.now(),
           sender: 'bot',
-          content: `Welcome to HR VA! I'm your AI HR assistant, here to help you with day-to-day HR questions and support. I can answer questions about company procedures, benefits, policies, and provide helpful guidance on company culture, workplace practices, and general HR topics. You can also switch to Onboarding mode for policy-specific questions.`,
+          content: `Welcome to HR VA! I'm your AI assistant for HR questions, policies, and onboarding support.`,
           timestamp: new Date()
         }
       ])

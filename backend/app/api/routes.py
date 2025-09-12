@@ -525,6 +525,3 @@ async def enhanced_ask(request: EnhancedAskRequest):
             status_code=500,
             detail="Failed to process request. Please try again."
         )
-
-
-
