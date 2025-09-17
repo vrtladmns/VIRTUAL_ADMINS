@@ -1,35 +1,19 @@
-// frontend/src/lib/api.js
 import axios from 'axios';
 
-// Debug logging first
-console.log('Environment:', import.meta.env.MODE);
-console.log('VITE_API_BASE_URL from env:', import.meta.env.VITE_API_BASE_URL);
-console.log('All env vars:', import.meta.env);
-
-// Prod uses env from GitHub Secrets. Dev can use localhost.
-// IMPORTANT: the secret value already includes "/api".
+// Production gets value from GitHub secret via workflow.
+// Dev can use localhost.
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? 'http://localhost:8000/api' : undefined);
 
-// More detailed error message
-if (!API_BASE) {
-  console.error('Environment details:', {
-    MODE: import.meta.env.MODE,
-    DEV: import.meta.env.DEV,
-    PROD: import.meta.env.PROD,
-    VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-    allEnvVars: Object.keys(import.meta.env)
-  });
-  throw new Error(`VITE_API_BASE_URL is not set for production build. Environment: ${import.meta.env.MODE}, DEV: ${import.meta.env.DEV}, VITE_API_BASE_URL: ${import.meta.env.VITE_API_BASE_URL}`);
-}
-
-// Temporary debug (remove later after verifying in prod)
+// Optional: log once while verifying. Remove later.
 console.log('API_BASE (runtime):', API_BASE);
 
-// Single axios instance used everywhere
+// If you want to hard-fail on missing prod env, uncomment:
+// if (!API_BASE) throw new Error('VITE_API_BASE_URL is not set for production build');
+
 export const api = axios.create({
-  baseURL: API_BASE,          // e.g., https://...azurewebsites.net/api
+  baseURL: API_BASE,           // do NOT hardcode localhost here
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 });
@@ -101,7 +85,7 @@ export const endpoints = {
   enhancedAsk: (request) => api.post('/ask', request),
 }
 
-// Example helpers (adapt or extend as needed)
+// Example endpoints (use everywhere in your pages)
 export const getPolicies = () => api.get('/policies');
 export const ask = (payload) => api.post('/ask', payload);
 
