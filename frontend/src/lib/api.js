@@ -1,15 +1,27 @@
 // frontend/src/lib/api.js
 import axios from 'axios';
 
+// Debug logging first
+console.log('Environment:', import.meta.env.MODE);
+console.log('VITE_API_BASE_URL from env:', import.meta.env.VITE_API_BASE_URL);
+console.log('All env vars:', import.meta.env);
+
 // Prod uses env from GitHub Secrets. Dev can use localhost.
 // IMPORTANT: the secret value already includes "/api".
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? 'http://localhost:8000/api' : undefined);
 
-// Fail fast if missing in prod so we never ship localhost.
+// More detailed error message
 if (!API_BASE) {
-  throw new Error('VITE_API_BASE_URL is not set for production build');
+  console.error('Environment details:', {
+    MODE: import.meta.env.MODE,
+    DEV: import.meta.env.DEV,
+    PROD: import.meta.env.PROD,
+    VITE_API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
+    allEnvVars: Object.keys(import.meta.env)
+  });
+  throw new Error(`VITE_API_BASE_URL is not set for production build. Environment: ${import.meta.env.MODE}, DEV: ${import.meta.env.DEV}, VITE_API_BASE_URL: ${import.meta.env.VITE_API_BASE_URL}`);
 }
 
 // Temporary debug (remove later after verifying in prod)
