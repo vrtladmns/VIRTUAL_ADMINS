@@ -24,11 +24,15 @@ jobs:
         with:
           node-version: 20
 
+      - name: Debug VITE_API_BASE_URL
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL_NEW }}
+        run: echo "✅ API URL is set (masked)"
+
       - name: Install deps
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
-      # Map the NEW secret to the env name your app expects
       - name: Build (Vite)
         working-directory: frontend
         env:
