@@ -301,9 +301,9 @@ export const ChatPage = () => {
         errorContent = 'Server error occurred. Please try again in a moment.'
       } else if (error.code === 'NETWORK_ERROR') {
         errorContent = 'Network error. Please check your connection and try again.'
-      } else if (error.message.includes('Failed to fetch')) {
-        errorContent = 'Backend connection failed. Please ensure the backend server is running on http://localhost:8000'
-      }
+       } else if (error.message.includes('Failed to fetch')) {
+         errorContent = 'Backend connection failed. Please check your network connection and try again.'
+       }
       
       const errorMessage = {
         id: Date.now() + 1,
