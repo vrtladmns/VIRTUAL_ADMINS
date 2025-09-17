@@ -1,23 +1,26 @@
-import axios from 'axios'
+// frontend/src/lib/api.js
+import axios from 'axios';
 
-// Get API base URL from environment variables
-const injected = import.meta.env.VITE_API_BASE_URL;
-// Local dev fallback
-const fallback = 'http://localhost:8000/api';
+// Prod uses env from GitHub Secrets. Dev can use localhost.
+// IMPORTANT: the secret value already includes "/api".
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ??
+  (import.meta.env.DEV ? 'http://localhost:8000/api' : undefined);
 
-// Use environment variable if available, otherwise fallback to localhost
-const API_BASE = injected || fallback;
+// Fail fast if missing in prod so we never ship localhost.
+if (!API_BASE) {
+  throw new Error('VITE_API_BASE_URL is not set for production build');
+}
 
-console.log('API Base URL:', API_BASE); // For debugging
+// Temporary debug (remove later after verifying in prod)
+console.log('API_BASE (runtime):', API_BASE);
 
-// Create axios instance with base configuration
-const api = axios.create({
-  baseURL: API_BASE,
+// Single axios instance used everywhere
+export const api = axios.create({
+  baseURL: API_BASE,          // e.g., https://...azurewebsites.net/api
   timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+  headers: { 'Content-Type': 'application/json' },
+});
 
 // Request interceptor
 api.interceptors.request.use(
@@ -85,5 +88,9 @@ export const endpoints = {
   askQuestion: (request) => api.post('/ask', request),
   enhancedAsk: (request) => api.post('/ask', request),
 }
+
+// Example helpers (adapt or extend as needed)
+export const getPolicies = () => api.get('/policies');
+export const ask = (payload) => api.post('/ask', payload);
 
 export default api
