@@ -1,61 +1,33 @@
-name: Deploy vafenew (New Frontend)
+name: Deploy Frontend (Azure Static Web Apps)
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches: [ master ]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy_vafenew.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch'
+  build_and_deploy:
     runs-on: ubuntu-latest
-    name: Build and Deploy (vafenew)
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-          lfs: false
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Use Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Debug VITE_API_BASE_URL
-        env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL_NEW }}
-        run: echo "✅ API URL is set (masked)"
-
-      - name: Install deps
-        working-directory: frontend
-        run: npm install
-
-      - name: Build (Vite)
-        working-directory: frontend
-        env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL_NEW }}
-        run: npm run build
-
-      - name: Deploy to Azure Static Web Apps (vafenew)
+      - name: Build And Deploy
+        id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          # Use the token you updated 1 hour ago
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_BEACH_09F7C710F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          app_location: frontend
+          action: "upload"
+          app_location: "./frontend"
           api_location: ""
-          output_location: dist
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close PR (vafenew)
-    steps:
-      - uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_BEACH_09F7C710F }}
-          action: close
+          output_location: "dist"
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL_NEW }}
+          NODE_VERSION: 20.19.1
