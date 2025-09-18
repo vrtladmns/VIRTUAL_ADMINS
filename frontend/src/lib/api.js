@@ -1,19 +1,13 @@
 import axios from 'axios';
 
-// Production gets value from GitHub secret via workflow.
-// Dev can use localhost.
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ??
-  (import.meta.env.DEV ? 'http://localhost:8000/api' : undefined);
+const injected = import.meta.env.VITE_API_BASE_URL;
+const fallback = 'http://localhost:8000/api';
+const API_BASE = injected || fallback;
 
-// Optional: log once while verifying. Remove later.
-console.log('API_BASE (runtime):', API_BASE);
+console.log('API Base URL (runtime):', API_BASE);
 
-// If you want to hard-fail on missing prod env, uncomment:
-// if (!API_BASE) throw new Error('VITE_API_BASE_URL is not set for production build');
-
-export const api = axios.create({
-  baseURL: API_BASE,           // do NOT hardcode localhost here
+const api = axios.create({
+  baseURL: API_BASE,
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 });
@@ -84,9 +78,5 @@ export const endpoints = {
   askQuestion: (request) => api.post('/ask', request),
   enhancedAsk: (request) => api.post('/ask', request),
 }
-
-// Example endpoints (use everywhere in your pages)
-export const getPolicies = () => api.get('/policies');
-export const ask = (payload) => api.post('/ask', payload);
 
 export default api
