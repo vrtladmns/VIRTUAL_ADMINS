@@ -2,7 +2,8 @@
   "routes": [
     {
       "route": "/api/*",
-      "allowedRoles": ["anonymous"]
+      "allowedRoles": ["anonymous"],
+      "rewrite": "https://vabackendnew-aqerd4b8fmgxhwg5.eastus-01.azurewebsites.net/api/*"
     },
     {
       "route": "/*",
