@@ -62,6 +62,12 @@ export const endpoints = {
   createEmployee: (employeeData) => api.post('/onboard', employeeData),
   askQuestion: (request) => api.post('/ask', request),
   enhancedAsk: (request) => api.post('/ask', request),
+  // Feedback endpoints
+  submitFeedback: (feedbackData) => api.post('/feedback', feedbackData),
+  getFeedback: (params = {}) => api.get('/feedback', { params }),
+  getFeedbackById: (id) => api.get(`/feedback/${id}`),
+  getFeedbackStats: () => api.get('/feedback/stats'),
+  deleteFeedback: (id) => api.delete(`/feedback/${id}`),
 }
 
 export default api

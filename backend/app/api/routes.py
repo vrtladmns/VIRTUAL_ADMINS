@@ -14,11 +14,13 @@ from ..models.policy import (
     EnhancedAskResponse
 )
 from ..models.employee import Employee, EmployeeResponse
+from ..models.feedback import FeedbackCreate, FeedbackResponse, FeedbackStats
 from ..services.mongo_ops import mongo_service
 from ..services.excel_writer import excel_writer
 from ..services.ai_connector import ai_connector
 from ..services.policy_service import policy_service
 from ..services.employee_kb_service import employee_kb_service
+from ..services.feedback_service import feedback_service
 
 router = APIRouter()
 
@@ -524,4 +526,179 @@ async def enhanced_ask(request: EnhancedAskRequest):
         raise HTTPException(
             status_code=500,
             detail="Failed to process request. Please try again."
+        )
+
+# ============================================================================
+# FEEDBACK ENDPOINTS
+# ============================================================================
+
+@router.post("/feedback", response_model=FeedbackResponse)
+async def submit_feedback(feedback: FeedbackCreate):
+    """Submit user feedback"""
+    try:
+        # Create feedback using service
+        feedback_id = feedback_service.create_feedback(feedback)
+        
+        return FeedbackResponse(
+            status="success",
+            message="Feedback submitted successfully",
+            feedback_id=feedback_id
+        )
+        
+    except ValueError as e:
+        # Validation errors from Pydantic
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "status": "error",
+                "message": str(e),
+                "details": "Please check your input and try again"
+            }
+        )
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Failed to submit feedback: {str(e)}")
+        
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "Failed to submit feedback. Please try again.",
+                "details": "Internal server error"
+            }
+        )
+
+@router.get("/feedback", response_model=dict)
+async def get_feedback(
+    limit: int = 50,
+    offset: int = 0,
+    category: Optional[str] = None
+):
+    """Get feedback entries with optional filtering"""
+    try:
+        if category:
+            # Get feedback by category
+            feedback_list = feedback_service.get_feedback_by_category(category, limit)
+        else:
+            # Get all feedback with pagination
+            feedback_list = feedback_service.get_feedback(limit, offset)
+        
+        return {
+            "status": "success",
+            "feedback": feedback_list,
+            "count": len(feedback_list)
+        }
+        
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Failed to retrieve feedback: {str(e)}")
+        
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "Failed to retrieve feedback. Please try again.",
+                "details": "Internal server error"
+            }
+        )
+
+@router.get("/feedback/{feedback_id}", response_model=dict)
+async def get_feedback_by_id(feedback_id: str):
+    """Get a specific feedback entry by ID"""
+    try:
+        feedback = feedback_service.get_feedback_by_id(feedback_id)
+        
+        if not feedback:
+            raise HTTPException(
+                status_code=404,
+                detail={
+                    "status": "error",
+                    "message": "Feedback not found",
+                    "details": "The requested feedback entry does not exist"
+                }
+            )
+        
+        return {
+            "status": "success",
+            "feedback": feedback
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Failed to get feedback {feedback_id}: {str(e)}")
+        
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "Failed to retrieve feedback. Please try again.",
+                "details": "Internal server error"
+            }
+        )
+
+@router.get("/feedback/stats", response_model=dict)
+async def get_feedback_stats():
+    """Get feedback statistics and analytics"""
+    try:
+        stats = feedback_service.get_feedback_stats()
+        
+        return {
+            "status": "success",
+            "stats": stats
+        }
+        
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Failed to get feedback stats: {str(e)}")
+        
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "Failed to retrieve feedback statistics. Please try again.",
+                "details": "Internal server error"
+            }
+        )
+
+@router.delete("/feedback/{feedback_id}", response_model=dict)
+async def delete_feedback(feedback_id: str):
+    """Delete a feedback entry by ID"""
+    try:
+        success = feedback_service.delete_feedback(feedback_id)
+        
+        if success:
+            return {
+                "status": "success",
+                "message": "Feedback deleted successfully"
+            }
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail={
+                    "status": "error",
+                    "message": "Feedback not found",
+                    "details": "The requested feedback entry does not exist"
+                }
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Failed to delete feedback {feedback_id}: {str(e)}")
+        
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "Failed to delete feedback. Please try again.",
+                "details": "Internal server error"
+            }
         )

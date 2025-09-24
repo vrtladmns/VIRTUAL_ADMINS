@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useStore } from '../store/useStore'
 import { Sidebar } from './Sidebar'
 import { Footer } from './Footer'
+import { FeedbackModal } from './FeedbackModal'
 import { Moon, Sun, Menu } from 'lucide-react'
 import { Button } from './ui/button'
 
 export const Layout = ({ children }) => {
   const { isDarkMode, toggleDarkMode, sidebarOpen, setSidebarOpen } = useStore()
+  const [showFeedback, setShowFeedback] = useState(false)
 
   return (
     <div className="min-h-screen bg-black text-white flex page-container viewport-consistent">
       {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)} 
+        onFeedbackClick={() => setShowFeedback(true)}
+      />
       
       {/* Main content */}
       <div className="flex-1 bg-black flex flex-col main-content lg:ml-64">
@@ -35,6 +41,12 @@ export const Layout = ({ children }) => {
         {/* Footer */}
         <Footer />
       </div>
+      
+      {/* Feedback Modal */}
+      <FeedbackModal 
+        isOpen={showFeedback} 
+        onClose={() => setShowFeedback(false)} 
+      />
     </div>
   )
 }
